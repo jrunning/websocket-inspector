@@ -9,9 +9,9 @@ import {
   ZapOff,
 } from 'react-feather';
 
-const makeBadge = (Component, title, color, size = 20) => () => (
+const makeBadge = (Component, title, color) => () => (
   <div title={title}>
-    <Component color={color} size={size} />
+    <Component color={color} size={20} title={title} />
   </div>
 );
 
@@ -30,12 +30,11 @@ MethodConstruct.displayName = 'MethodConstruct';
 export const MethodSend = makeBadge(ChevronsRight, 'Called: WebSocket#send', 'mediumblue');
 MethodSend.displayName = 'MethodSend';
 
-export const Badge = {
-  EVENT_CLOSE: EventClose,
-  EVENT_ERROR: EventError,
-  EVENT_MESSAGE: EventMessage,
-  EVENT_OPEN: EventOpen,
-  METHOD_CLOSE: MethodClose,
-  METHOD_CONSTRUCT: MethodConstruct,
-  METHOD_SEND: MethodSend,
-};
+export const ReadyStateConnecting = makeBadge(Zap, 'Connecting', 'rgb(255, 215, 0, .5)');
+ReadyStateConnecting.displayName = 'ReadyStateConnecting';
+export const ReadyStateOpen = makeBadge(Zap, 'Open', 'gold');
+ReadyStateOpen.displayName = 'ReadyStateOpen';
+export const ReadyStateClosing = makeBadge(ZapOff, 'Closing', 'rgb(105, 105, 105, .5)');
+ReadyStateClosing.displayName = 'ReadyStateClosing';
+export const ReadyStateClosed = makeBadge(ZapOff, 'Closed', 'dimgray');
+ReadyStateClosed.displayName = 'ReadyStateClosed';

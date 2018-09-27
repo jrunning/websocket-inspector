@@ -2,23 +2,30 @@ import React from 'react';
 
 import ReactTable from 'react-table';
 import { connect } from 'react-redux';
+import { ReadyStateBadgeCell } from './ReadyStateBadgeCell';
 import { WebSocketTableDetail } from './WebSocketTableDetail';
 
 import 'react-table/react-table.css';
 
-const ReadyState = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
-const readyStateAccessor = ({ readyState }) =>
-  typeof readyState === 'number' ? ReadyState[readyState] : null;
+const ReadyStateName = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
+
+const protocolsAccessor = ({ protocols = [] }) => protocols.join(', ');
 
 const columns = [
+  {
+    Header: '',
+    accessor: 'readyState',
+    Cell: ({ value }) => <ReadyStateBadgeCell name={ReadyStateName[value]} />,
+    width: 30,
+  },
   {
     Header: 'URL',
     accessor: 'url',
   },
   {
-    Header: 'readyState',
-    id: 'readyState',
-    accessor: readyStateAccessor,
+    Header: 'Protocols',
+    id: 'protocols',
+    accessor: protocolsAccessor,
   },
 ];
 

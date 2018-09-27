@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { BadgeCell } from './BadgeCell';
 import { DataCell } from './DataCell';
+import { EventBadgeCell } from './EventBadgeCell';
+import { EventType } from '../lib/models';
 import 'react-table/react-table.css';
 
 function formatDuration(ms) {
@@ -20,31 +21,36 @@ function formatDuration(ms) {
   return `${minsStr}:${secsStr}`;
 }
 
-const timeAccessor = baseTime => ({ timestamp }) => formatDuration(timestamp - baseTime);
-
 const columns = baseTime => [
   {
     Header: '',
-    id: 'icon',
     accessor: 'type',
-    Cell: BadgeCell,
+    Cell: ({ value }) => <EventBadgeCell type={value} />,
     width: 30,
   },
   {
     Header: 'Data',
     id: 'data',
-    accessor: x => (console.log(JSON.stringify(x.original)), x.original),
-    Cell: DataCell,
+    Cell: ({ original }) => <DataCell {...original} />,
   },
   {
     Header: 'Time',
     id: 'time',
-    accessor: timeAccessor(baseTime),
+    accessor: 'timestamp',
+    Cell: ({ original: { timestamp } }) => formatDuration(timestamp - baseTime),
     headerClassName: 'alignRight',
     className: 'time alignRight',
   },
 ];
 
+function filterEvents(events) {
+  return events.filter(
+    ({ type }) => type === EventType.EVENT_MESSAGE || type === EventType.METHOD_SEND
+  );
+}
+
 export function WebSocketTableDetail({ baseTime, events = [] }) {
-  return <ReactTable data={events} columns={columns(baseTime)} showPagination={false} />;
+  return (
+    <ReactTable data={filterEvents(events)} columns={columns(baseTime)} showPagination={false} />
+  );
 }

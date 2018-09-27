@@ -3,6 +3,9 @@ import store from './lib/redux/store';
 
 let ws;
 
+const webSocketUrl = 'wss://demos.kaazing.com/echo';
+const webSocketProtocols = void 0; // [];
+
 function sleep(ms = 0) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -10,7 +13,7 @@ function sleep(ms = 0) {
 async function main() {
   registerProxy(store.dispatch);
   await import('./lib/ui');
-  ws = new WebSocket('wss://demos.kaazing.com/echo');
+  ws = new WebSocket(webSocketUrl, webSocketProtocols);
   ws.addEventListener('open', async evt => {
     await sleep(250);
     ws.send('hey data');

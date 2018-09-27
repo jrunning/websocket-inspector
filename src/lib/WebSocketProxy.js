@@ -9,7 +9,7 @@ import {
 } from './redux/wsActions';
 
 if (module.hot) {
-  // module.hot.decline();
+  module.hot.decline();
 }
 
 const _WebSocket = WebSocket;
