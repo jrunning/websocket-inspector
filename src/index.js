@@ -15,11 +15,11 @@ async function main() {
   await import('./lib/ui');
   ws = new WebSocket(webSocketUrl, webSocketProtocols);
   ws.addEventListener('open', async evt => {
-    await sleep(250);
+    await sleep(500);
     ws.send('hey data');
-    await sleep(250);
+    await sleep(500);
     ws.send('going away');
-    await sleep(100);
+    await sleep(500);
     ws.close(3000, 'gone');
   });
 }

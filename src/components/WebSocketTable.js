@@ -11,6 +11,21 @@ const ReadyStateName = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED'];
 
 const protocolsAccessor = ({ protocols = [] }) => protocols.join(', ');
 
+function formatTimestamp(timestamp) {
+  const date = new Date(performance.timeOrigin + timestamp);
+  const time = date.toLocaleTimeString('en-US', {
+    hour12: false,
+    hour: 'numeric',
+    minute: '2-digit',
+    second: '2-digit',
+  });
+  const millis = date.getMilliseconds().toLocaleString(
+    'en-US',
+    { maximumFractionDigits: 0, minimumIntegerDigits: 3 }
+  );
+  return `${time}.${millis}`;
+}
+
 const columns = [
   {
     Header: '',
@@ -26,6 +41,12 @@ const columns = [
     Header: 'Protocols',
     id: 'protocols',
     accessor: protocolsAccessor,
+  },
+  {
+    Header: 'Time',
+    accessor: 'timestamp',
+    // TODO Make this prettier
+    Cell: ({ value }) => formatTimestamp(value),
   },
 ];
 

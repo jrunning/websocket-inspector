@@ -37,7 +37,7 @@ const columns = baseTime => [
     Header: 'Time',
     id: 'time',
     accessor: 'timestamp',
-    Cell: ({ original: { timestamp } }) => formatDuration(timestamp - baseTime),
+    Cell: ({ value: timestamp }) => formatDuration(timestamp - baseTime),
     headerClassName: 'alignRight',
     className: 'time alignRight',
   },
@@ -51,6 +51,8 @@ function filterEvents(events) {
 
 export function WebSocketTableDetail({ baseTime, events = [] }) {
   return (
+    // TODO You are here
+    // TODO SubComponent for data
     <ReactTable data={filterEvents(events)} columns={columns(baseTime)} showPagination={false} />
   );
 }

@@ -16,10 +16,21 @@ const _WebSocket = WebSocket;
 let registered;
 
 function listenTo(webSocket, dispatch) {
-  webSocket.addEventListener('close', e => dispatch(wsEventClose(webSocket, e)));
-  webSocket.addEventListener('error', e => dispatch(wsEventError(webSocket, e)));
-  webSocket.addEventListener('message', e => dispatch(wsEventMessage(webSocket, e)));
-  webSocket.addEventListener('open', e => dispatch(wsEventOpen(webSocket, e)));
+  const handleError = e => dispatch(wsEventError(webSocket, e));
+  const handleMessage = e => dispatch(wsEventMessage(webSocket, e));
+  const handleOpen = e => dispatch(wsEventOpen(webSocket, e));
+  const handleClose = e => {
+    dispatch(wsEventClose(webSocket, e));
+    webSocket.removeEventListener('close', handleClose);
+    webSocket.removeEventListener('error', handleError);
+    webSocket.removeEventListener('message', handleMessage);
+    webSocket.removeEventListener('open', handleOpen);
+  };
+
+  webSocket.addEventListener('close', handleClose);
+  webSocket.addEventListener('error', handleError);
+  webSocket.addEventListener('message', handleMessage);
+  webSocket.addEventListener('open', handleOpen);
 }
 
 function wsProxy(_WebSocket, dispatch) {
